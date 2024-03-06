@@ -24,10 +24,10 @@ title: Student Blog
       transform: translateX(-50%);
     }
 
-    #line {
-      width: 300px;
-      height: 5px;
-      background-color: green;
+    #platform {
+      width: 200px;
+      height: 20px;
+      background-color: #3498db;
       position: absolute;
       bottom: 100px;
       left: 50%;
@@ -38,16 +38,14 @@ title: Student Blog
 <body>
 
 <div id="stickman"></div>
-<div id="line"></div>
+<div id="platform"></div>
 
 <script>
   const stickman = document.getElementById("stickman");
-  const line = document.getElementById("line");
+  const platform = document.getElementById("platform");
   let positionX = window.innerWidth / 2 - 25; // Initial X position
   let positionY = 0; // Initial Y position
   let isJumping = false;
-  let jumpHeight = 0;
-  const gravity = 2;
 
   function updateStickman() {
     stickman.style.left = positionX + "px";
@@ -57,40 +55,42 @@ title: Student Blog
   function jump() {
     if (!isJumping) {
       isJumping = true;
+      let jumpHeight = 100;
       const jumpInterval = setInterval(() => {
-        if (jumpHeight < 100) {
-          // Jump up
-          positionY += 7;
-          jumpHeight += 7;
-        } else if (jumpHeight >= 100) {
-          // Fall down with gravity
-          positionY -= gravity;
-          if (positionY >= 0) {
-            positionY = 5;
-            clearInterval(jumpInterval);
-            isJumping = false;
-            jumpHeight = 5;
-          }
+        positionY += 5;
+        jumpHeight -= 5;
+        if (jumpHeight <= 0) {
+          clearInterval(jumpInterval);
+          fall();
         }
         updateStickman();
       }, 20);
     }
   }
 
-  // Event listener for movement controls
+  function fall() {
+    const fallInterval = setInterval(() => {
+      positionY -= 5;
+      if (positionY <= 0) {
+        positionY = 0;
+        isJumping = false;
+        clearInterval(fallInterval);
+      }
+      updateStickman();
+    }, 20);
+  }
+
   window.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight" && positionX < window.innerWidth - 50) {
+    if (event.key === "ArrowRight") {
       positionX += 10;
-    } else if (event.key === "ArrowLeft" && positionX > 0) {
+    } else if (event.key === "ArrowLeft") {
       positionX -= 10;
-    } else if (event.key === "ArrowUp" && !isJumping) {
+    } else if (event.key === "ArrowUp") {
       jump();
     }
 
     updateStickman();
   });
-
-  updateStickman();
 </script>
 
 </body>
