@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stickman Game</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
 
-    #stickman {
-      width: 50px;
-      height: 100px;
-      background-color: black;
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+        #stickman {
+            width: 50px;
+            height: 100px;
+            background-color: #333;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
-    #platform {
-      width: 200px;
-      height: 20px;
-      background-color: #3498db;
-      position: absolute;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  </style>
+        #platform {
+            width: 200px;
+            height: 20px;
+            background-color: #999;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+    <title>Stickman Game</title>
 </head>
 <body>
 
@@ -37,56 +37,59 @@
 <div id="platform"></div>
 
 <script>
-  const stickman = document.getElementById("stickman");
-  const platform = document.getElementById("platform");
-  let positionX = window.innerWidth / 2 - 25; // Initial X position
-  let positionY = 3; // Initial Y position
-  let isJumping = false;
+    const stickman = document.getElementById('stickman');
+    const platform = document.getElementById('platform');
+    let jumping = false;
 
-  function updateStickman() {
-    stickman.style.left = positionX + "px";
-    stickman.style.bottom = positionY + "px";
-  }
-
-  function jump() {
-    if (!isJumping) {
-      isJumping = true;
-      let jumpHeight = 100;
-      const jumpInterval = setInterval(() => {
-        positionY += 5;
-        jumpHeight -= 5;
-        if (jumpHeight <= 0) {
-          clearInterval(jumpInterval);
-          fall();
+    function jump() {
+        if (!jumping) {
+            jumping = true;
+            let jumpHeight = 0;
+            const jumpInterval = setInterval(() => {
+                if (jumpHeight < 100) {
+                    stickman.style.bottom = jumpHeight + 'px';
+                    jumpHeight += 5;
+                } else {
+                    clearInterval(jumpInterval);
+                    fall();
+                }
+            }, 20);
         }
-        updateStickman();
-      }, 20);
-    }
-  }
-
-  function fall() {
-    const fallInterval = setInterval(() => {
-      positionY -= 5;
-      if (positionY <= 0) {
-        positionY = 0;
-        isJumping = false;
-        clearInterval(fallInterval);
-      }
-      updateStickman();
-    }, 20);
-  }
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight") {
-      positionX += 10;
-    } else if (event.key === "ArrowLeft") {
-      positionX -= 10;
-    } else if (event.key === "ArrowUp") {
-      jump();
     }
 
-    updateStickman();
-  });
+    function fall() {
+        let fallHeight = 100;
+        const fallInterval = setInterval(() => {
+            if (fallHeight > 0) {
+                stickman.style.bottom = fallHeight + 'px';
+                fallHeight -= 5;
+            } else {
+                stickman.style.bottom = '0';
+                clearInterval(fallInterval);
+                jumping = false;
+            }
+        }, 20);
+    }
+
+    function moveLeft() {
+        const currentPosition = parseInt(getComputedStyle(stickman).left);
+        stickman.style.left = currentPosition - 10 + 'px';
+    }
+
+    function moveRight() {
+        const currentPosition = parseInt(getComputedStyle(stickman).left);
+        stickman.style.left = currentPosition + 10 + 'px';
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowUp') {
+            jump();
+        } else if (event.key === 'ArrowLeft') {
+            moveLeft();
+        } else if (event.key === 'ArrowRight') {
+            moveRight();
+        }
+    });
 </script>
 
 </body>
