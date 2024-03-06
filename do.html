@@ -1,96 +1,144 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8">
+  
+<style>
+body {
+  background-color: #1a2f36;
+}
+h1 {
+  text-align: center;
+  width: 100%;
+  color: #ffffff;
+  position: absolute;
+  top: 0;
+}
+</style>
 
-        #stickman {
-            width: 50px;
-            height: 100px;
-            background-color: #333;
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        #platform {
-            width: 200px;
-            height: 20px;
-            background-color: #999;
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
-    <title>Stickman Game</title>
-</head>
-<body>
-
-<div id="stickman"></div>
-<div id="platform"></div>
-
-<script>
-    const stickman = document.getElementById('stickman');
-    const platform = document.getElementById('platform');
-    let jumping = false;
-
-    function jump() {
-        if (!jumping) {
-            jumping = true;
-            let jumpHeight = 0;
-            const jumpInterval = setInterval(() => {
-                if (jumpHeight < 100) {
-                    stickman.style.bottom = jumpHeight + 'px';
-                    jumpHeight += 5;
-                } else {
-                    clearInterval(jumpInterval);
-                    fall();
-                }
-            }, 20);
-        }
-    }
-
-    function fall() {
-        let fallHeight = 100;
-        const fallInterval = setInterval(() => {
-            if (fallHeight > 0) {
-                stickman.style.bottom = fallHeight + 'px';
-                fallHeight -= 5;
-            } else {
-                stickman.style.bottom = '0';
-                clearInterval(fallInterval);
-                jumping = false;
-            }
-        }, 20);
-    }
-
-    function moveLeft() {
-        const currentPosition = parseInt(getComputedStyle(stickman).left);
-        stickman.style.left = currentPosition - 10 + 'px';
-    }
-
-    function moveRight() {
-        const currentPosition = parseInt(getComputedStyle(stickman).left);
-        stickman.style.left = currentPosition + 10 + 'px';
-    }
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowUp') {
-            jump();
-        } else if (event.key === 'ArrowLeft') {
-            moveLeft();
-        } else if (event.key === 'ArrowRight') {
-            moveRight();
-        }
-    });
+  <script>
+  window.console = window.console || function(t) {};
 </script>
 
+  
+  
+</head>
+
+<body translate="no">
+  <h1>Use the arrow keys to walk left/right</h1>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js'></script>
+      <script id="rendered-js" >
+function Sprite(src, spriteWidth, spriteHeight, modes) {
+  var mode = null;
+  var frameId = 0;
+  var totalFrames = 1;
+  var _sprite = this;
+  var xBG = 0;
+  var yBG = 0;
+
+  // consruct
+  var init = _init();
+  _sprite.update = _update;
+  _sprite.setMode = _setMode;
+
+  function _init() {
+    _sprite.domElement = document.createElement('div');
+    _sprite.domElement.style.position = 'relative';
+    _sprite.domElement.style.width = spriteWidth + 'px';
+    _sprite.domElement.style.height = spriteHeight + 'px';
+    _sprite.domElement.style.display = 'block';
+    _sprite.domElement.style.backgroundImage = 'url("' + src + '")';
+  };
+
+  function _update() {
+    frameId++;
+    xBG = -mode.x - spriteWidth * (frameId % totalFrames);
+    //console.log(xBG, yBG);
+    _sprite.domElement.style.backgroundPositionX = xBG + 'px';
+  }
+
+  function _setMode(id) {
+    mode = modes[id];
+    frameId = 0;
+    totalFrames = mode.frames;
+    _sprite.domElement.style.backgroundPositionX = -mode.x + 'px';
+    _sprite.domElement.style.backgroundPositionY = -mode.y + 'px';
+  }
+
+  return _sprite;
+}
+
+
+// Testing...
+var animModes = {
+  walkRight: { frames: 6, x: 0, y: 1 },
+  walkLeft: { frames: 6, x: 0, y: 151 },
+  stopRight: { frames: 1, x: 0, y: 301 },
+  stopLeft: { frames: 1, x: 104, y: 301 } };
+
+
+var playerDirection = 'Right';
+var playerMode = 'stop';
+var player = new Sprite('http://atomicrobotdesign.com/blog_media/sprite_movement/images/gb_walk.png', 104, 150, animModes);
+player.setMode('stop' + playerDirection);
+player.domElement.style.top = '100px';
+player.domElement.style.left = '100px';
+
+document.body.appendChild(player.domElement);
+// Add key controls
+window.onkeydown = keyDownListener;
+window.onkeyup = keyUpListener;
+
+function keyDownListener(e) {
+  switch (e.keyCode) {
+    case 37: // LEFT
+      if (playerMode != 'walk') {
+        playerDirection = 'Left';
+        playerMode = 'walk';
+        player.setMode(playerMode + playerDirection);
+      }
+      break;
+
+    case 39: // RIGHT
+      if (playerMode != 'walk') {
+        playerDirection = 'Right';
+        playerMode = 'walk';
+        player.setMode(playerMode + playerDirection);
+      }
+      break;}
+
+}
+
+function keyUpListener() {
+  playerMode = 'stop';
+  player.setMode(playerMode + playerDirection);
+}
+
+function render() {
+
+  player.update();
+
+  var x = player.domElement.style.left ? parseInt(player.domElement.style.left) : 0;
+  var y = player.domElement.style.top ? parseInt(player.domElement.style.top) : 0;
+
+  if (playerMode == 'walk') {
+
+    if (playerDirection == 'Left') x -= 20;
+    if (playerDirection == 'Right') x += 20;
+
+    player.domElement.style.left = x + 'px';
+  }
+
+}
+var fps = 8;
+setInterval(render, 1000 / fps);
+//# sourceURL=pen.js
+    </script>
+
+  
 </body>
+
 </html>
