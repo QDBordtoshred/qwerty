@@ -73,36 +73,25 @@ title: Student Blog
           jumpHeight = 0;
         }
         updateStickman();
-
-        // Check if stickman is on the line
-        if (
-          positionX >= line.offsetLeft &&
-          positionX <= line.offsetLeft + line.offsetWidth &&
-          positionY <= line.offsetTop + line.offsetHeight
-        ) {
-          // Stickman is on the line, allow movement
-          window.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowRight" && positionX < window.innerWidth - 50) {
-              positionX += 10;
-            } else if (event.key === "ArrowLeft" && positionX > 0) {
-              positionX -= 10;
-            } else if (event.key === "ArrowUp") {
-              jump();
-            }
-
-            updateStickman();
-          });
-        } else {
-          // Stickman is not on the line, remove movement controls
-          window.removeEventListener("keydown", () => {});
-        }
       }, 20);
     }
   }
+
+  // Event listener for movement controls
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight" && positionX < window.innerWidth - 50) {
+      positionX += 10;
+    } else if (event.key === "ArrowLeft" && positionX > 0) {
+      positionX -= 10;
+    } else if (event.key === "ArrowUp") {
+      jump();
+    }
+
+    updateStickman();
+  });
 
   updateStickman();
 </script>
 
 </body>
 </html>
-
