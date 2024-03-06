@@ -25,8 +25,7 @@ Blogging in GitHub pages is a way to learn and code at the same time.
       margin: 0;
       overflow: hidden;
     }
-
-    #stickman {
+#stickman {
       width: 50px;
       height: 100px;
       background-color: black;
