@@ -62,14 +62,14 @@ title: Student Blog
           // Jump up
           positionY += 7;
           jumpHeight += 7;
-        } else if (jumpHeight <= 100) {
+        } else if (jumpHeight >= 100) {
           // Fall down with gravity
           positionY -= gravity;
           if (positionY >= 0) {
-            positionY = 0;
+            positionY = 5;
             clearInterval(jumpInterval);
             isJumping = false;
-            jumpHeight = 0;
+            jumpHeight = 5;
           }
         }
         updateStickman();
