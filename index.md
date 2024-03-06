@@ -68,11 +68,11 @@ Blogging in GitHub pages is a way to learn and code at the same time.
     if (!isJumping) {
       isJumping = true;
       const jumpInterval = setInterval(() => {
-        if (jumpHeight < 70) {
+        if (jumpHeight < 100) {
           // Jump up
           positionY += 5;
           jumpHeight += 5;
-        } else if (jumpHeight >= 70 && jumpHeight < 140) {
+        } else if (jumpHeight >= 100 && jumpHeight < 200) {
           // Fall down
           positionY -= 5;
           jumpHeight += 5;
@@ -102,11 +102,9 @@ Blogging in GitHub pages is a way to learn and code at the same time.
   function isOnPlatform() {
     const stickmanBottom = positionY;
     const platformTop = window.innerHeight - parseInt(getComputedStyle(platform).bottom);
-    return stickmanBottom <= platformTop;
+    return stickmanBottom <= platformTop + 5; // Adjusted the condition to allow the stickman to jump onto the platform
   }
 </script>
 
 </body>
 </html>
-
-
