@@ -13,6 +13,8 @@ Blogging in GitHub pages is a way to learn and code at the same time.
 - Plans, Lists, [Scrum Boards](https://clickup.com/blog/scrum-board/) help you to track key events, show progress and record time.  Effort is a big part of your class grade.  Show plans and time spent!
 - [Hacks(Todo)](https://levelup.gitconnected.com/six-ultimate-daily-hacks-for-every-programmer-60f5f10feae) enable you to stay in focus with key requirements of the class.  Each Hack will produce Tangibles.
 - Tangibles or [Tangible Artifacts](https://en.wikipedia.org/wiki/Artifact_(software_development)) are things you accumulate as a learner and coder. 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,11 +70,11 @@ Blogging in GitHub pages is a way to learn and code at the same time.
     if (!isJumping) {
       isJumping = true;
       const jumpInterval = setInterval(() => {
-        if (jumpHeight < 100) {
+        if (jumpHeight < 150) {
           // Jump up
           positionY += 5;
           jumpHeight += 5;
-        } else if (jumpHeight >= 100 && jumpHeight < 200) {
+        } else if (jumpHeight >= 150 && jumpHeight < 300) {
           // Fall down
           positionY -= 5;
           jumpHeight += 5;
@@ -102,7 +104,7 @@ Blogging in GitHub pages is a way to learn and code at the same time.
   function isOnPlatform() {
     const stickmanBottom = positionY;
     const platformTop = window.innerHeight - parseInt(getComputedStyle(platform).bottom);
-    return stickmanBottom <= platformTop + 5; // Adjusted the condition to allow the stickman to jump onto the platform
+    return stickmanBottom <= platformTop + 5; // Adjusted the condition to allow the stickman to jump higher than the platform
   }
 </script>
 
