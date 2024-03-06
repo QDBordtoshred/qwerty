@@ -2,7 +2,6 @@
 layout: default
 title: Student Blog
 ---
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,6 +47,7 @@ title: Student Blog
   let positionY = 0; // Initial Y position
   let isJumping = false;
   let jumpHeight = 0;
+  const gravity = 2;
 
   function updateStickman() {
     stickman.style.left = positionX + "px";
@@ -58,19 +58,19 @@ title: Student Blog
     if (!isJumping) {
       isJumping = true;
       const jumpInterval = setInterval(() => {
-        if (jumpHeight < 50) {
+        if (jumpHeight < 100) {
           // Jump up
-          positionY += 5;
-          jumpHeight += 5;
-        } else if (jumpHeight >= 50 && jumpHeight < 100) {
-          // Fall down
-          positionY -= 5;
-          jumpHeight += 5;
-        } else {
-          // Jump complete
-          clearInterval(jumpInterval);
-          isJumping = false;
-          jumpHeight = 0;
+          positionY += 7;
+          jumpHeight += 7;
+        } else if (jumpHeight >= 100) {
+          // Fall down with gravity
+          positionY -= gravity;
+          if (positionY <= 0) {
+            positionY = 0;
+            clearInterval(jumpInterval);
+            isJumping = false;
+            jumpHeight = 0;
+          }
         }
         updateStickman();
       }, 20);
@@ -83,7 +83,7 @@ title: Student Blog
       positionX += 10;
     } else if (event.key === "ArrowLeft" && positionX > 0) {
       positionX -= 10;
-    } else if (event.key === "ArrowUp") {
+    } else if (event.key === "ArrowUp" && !isJumping) {
       jump();
     }
 
