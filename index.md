@@ -58,11 +58,11 @@ title: Student Blog
     if (!isJumping) {
       isJumping = true;
       const jumpInterval = setInterval(() => {
-        if (jumpHeight < 100) {
+        if (jumpHeight > 70) {
           // Jump up
           positionY += 7;
           jumpHeight += 7;
-        } else if (jumpHeight >= 100) {
+        } else if (jumpHeight <= 70) {
           // Fall down with gravity
           positionY -= gravity;
           if (positionY <= 0) {
