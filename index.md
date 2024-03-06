@@ -35,14 +35,26 @@ Blogging in GitHub pages is a way to learn and code at the same time.
       left: 50%;
       transform: translateX(-50%);
     }
+
+    #platform {
+      width: 200px;
+      height: 10px;
+      background-color: #3498db;
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   </style>
 </head>
 <body>
 
 <div id="stickman"></div>
+<div id="platform"></div>
 
 <script>
   const stickman = document.getElementById("stickman");
+  const platform = document.getElementById("platform");
   let positionX = window.innerWidth / 2 - 25; // Initial X position
   let positionY = 0; // Initial Y position
   let isJumping = false;
@@ -57,11 +69,11 @@ Blogging in GitHub pages is a way to learn and code at the same time.
     if (!isJumping) {
       isJumping = true;
       const jumpInterval = setInterval(() => {
-        if (jumpHeight < 50) {
+        if (jumpHeight < 70) {
           // Jump up
           positionY += 5;
           jumpHeight += 5;
-        } else if (jumpHeight >= 50 && jumpHeight < 100) {
+        } else if (jumpHeight >= 70 && jumpHeight < 140) {
           // Fall down
           positionY -= 5;
           jumpHeight += 5;
@@ -81,13 +93,20 @@ Blogging in GitHub pages is a way to learn and code at the same time.
       positionX += 10;
     } else if (event.key === "ArrowLeft") {
       positionX -= 10;
-    } else if (event.key === "ArrowUp") {
+    } else if (event.key === "ArrowUp" && isOnPlatform()) {
       jump();
     }
 
     updateStickman();
   });
+
+  function isOnPlatform() {
+    const stickmanBottom = positionY;
+    const platformTop = parseInt(getComputedStyle(platform).bottom);
+    return stickmanBottom === platformTop;
+  }
 </script>
 
 </body>
 </html>
+
