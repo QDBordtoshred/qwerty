@@ -25,7 +25,8 @@ Blogging in GitHub pages is a way to learn and code at the same time.
       margin: 0;
       overflow: hidden;
     }
-#stickman {
+
+    #stickman {
       width: 50px;
       height: 100px;
       background-color: black;
@@ -45,6 +46,7 @@ Blogging in GitHub pages is a way to learn and code at the same time.
   let positionX = window.innerWidth / 2 - 25; // Initial X position
   let positionY = 0; // Initial Y position
   let isJumping = false;
+  let jumpHeight = 0;
 
   function updateStickman() {
     stickman.style.left = positionX + "px";
@@ -54,13 +56,20 @@ Blogging in GitHub pages is a way to learn and code at the same time.
   function jump() {
     if (!isJumping) {
       isJumping = true;
-      let jumpHeight = 100;
       const jumpInterval = setInterval(() => {
-        positionY += 5;
-        jumpHeight -= 5;
-        if (jumpHeight <= 0) {
+        if (jumpHeight < 50) {
+          // Jump up
+          positionY += 5;
+          jumpHeight += 5;
+        } else if (jumpHeight >= 50 && jumpHeight < 100) {
+          // Fall down
+          positionY -= 5;
+          jumpHeight += 5;
+        } else {
+          // Jump complete
           clearInterval(jumpInterval);
           isJumping = false;
+          jumpHeight = 0;
         }
         updateStickman();
       }, 20);
@@ -82,4 +91,3 @@ Blogging in GitHub pages is a way to learn and code at the same time.
 
 </body>
 </html>
-
