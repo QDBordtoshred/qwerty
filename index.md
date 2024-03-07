@@ -11,10 +11,10 @@ title: Student Blog
   <style>
     body {
       background-color: #1a2f36;
-      transform: scale(0.25);
+      transform: scale(0.5);
       transform-origin: top left;
-      width: 400%; /* Adjust the width to compensate for the scaling */
-      height: 400%; /* Adjust the height to compensate for the scaling */
+      width: 200%; /* Adjust the width to compensate for the scaling */
+      height: 200%; /* Adjust the height to compensate for the scaling */
     }
 
     h1 {
