@@ -11,7 +11,6 @@ title: Student Blog
   
 <style>
 body {
-  background-color: #1a2f36;
 }
 h1 {
   text-align: center;
