@@ -46,8 +46,8 @@ function Sprite(src, spriteWidth, spriteHeight, modes) {
   function _init() {
     _sprite.domElement = document.createElement('div');
     _sprite.domElement.style.position = 'relative';
-    _sprite.domElement.style.width = spriteWidth - 20 + 'px';
-    _sprite.domElement.style.height = spriteHeight - 20 + 'px';
+    _sprite.domElement.style.width = spriteWidth + 'px';
+    _sprite.domElement.style.height = spriteHeight + 'px';
     _sprite.domElement.style.display = 'block';
     _sprite.domElement.style.backgroundImage = 'url("' + src + '")';
   };
