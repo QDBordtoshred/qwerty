@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+</head>
+<body>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" placeholder="Enter password">
+  <button onclick="signIn()">Sign In</button>
+
+  <script>
+    function signIn() {
+      // Get the entered password
+      var enteredPassword = document.getElementById("password").value;
+
+      // Check if the entered password is correct
+      if (enteredPassword === "Sundance2914!") {
+        // Redirect to the specified URL if the password is correct
+        window.location.href = "https://qdbordtoshred.github.io/qwerty/";
+      } else {
+        // Display an error message or do nothing if the password is incorrect
+        alert("Incorrect password. Please try again.");
+      }
+    }
+  </script>
+
+</body>
+</html>
