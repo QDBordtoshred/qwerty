@@ -1,5 +1,5 @@
 ---
 layout: blogs
 permalink: /blogs
-title: Quinn Bireley 
+title: Quinn Bireley Tri 3
 ---
