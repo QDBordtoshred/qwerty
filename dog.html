@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <style>
+    body {}
+
+    h1 {
+      text-align: center;
+      width: 100%;
+      color: #ffffff;
+      position: absolute;
+      top: 0;
+    }
+  </style>
+
+  <script>
+    window.console = window.console || function (t) {};
+  </script>
+
+</head>
+
+<body translate="no">
+  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js'></script>
+  <script id="rendered-js">
+    function Sprite(src, spriteWidth, spriteHeight, modes) {
+      var mode = null;
+      var frameId = 0;
+      var totalFrames = 1;
+      var _sprite = this;
+      var xBG = 0;
+      var yBG = 0;
+      var yVelocity = 0; // Added variable for vertical velocity
+      var isJumping = false; // Added variable to track if the player is jumping
+
+      // consruct
+      var init = _init();
+      _sprite.update = _update;
+      _sprite.setMode = _setMode;
+      _sprite.jump = _jump; // Added jump function
+
+      function _init() {
+        _sprite.domElement = document.createElement('div');
+        _sprite.domElement.style.position = 'relative';
+        _sprite.domElement.style.width = spriteWidth + 'px';
+        _sprite.domElement.style.height = spriteHeight + 'px';
+        _sprite.domElement.style.display = 'block';
+        _sprite.domElement.style.backgroundImage = 'url("' + src + '")';
+      };
+
+      function _update() {
+        frameId++;
+        xBG = -mode.x - spriteWidth * (frameId % totalFrames);
+        //console.log(xBG, yBG);
+        _sprite.domElement.style.backgroundPositionX = xBG + 'px';
+
+        // Update vertical position based on jump
+        if (isJumping) {
+          yVelocity += 2; // Gravity effect
+          yBG += yVelocity;
+          if (yBG >= 0) {
+            yBG = 0;
+            isJumping = false;
+          }
+        }
+
+        _sprite.domElement.style.backgroundPositionY = yBG + 'px';
+      }
+
+      function _setMode(id) {
+        mode = modes[id];
+        frameId = 0;
+        totalFrames = mode.frames;
+        _sprite.domElement.style.backgroundPositionX = -mode.x + 'px';
+        _sprite.domElement.style.backgroundPositionY = -mode.y + 'px';
+      }
+
+      function _jump() {
+        if (!isJumping) {
+          isJumping = true;
+          yVelocity = -30; // Initial jump velocity
+        }
+      }
+
+      return _sprite;
+    }
+
+
+    // Testing...
+    var animModes = {
+      walkRight: {
+        frames: 6,
+        x: 0,
+        y: 1
+      },
+      walkLeft: {
+        frames: 6,
+        x: 0,
+        y: 151
+      },
+      stopRight: {
+        frames: 1,
+        x: 0,
+        y: 301
+      },
+      stopLeft: {
+        frames: 1,
+        x: 104,
+        y: 301
+      }
+    };
+
+
+    var playerDirection = 'Right';
+    var playerMode = 'stop';
+    var player = new Sprite('http://atomicrobotdesign.com/blog_media/sprite_movement/images/gb_walk.png', 104, 150, animModes);
+    player.setMode('stop' + playerDirection);
+    player.domElement.style.top = '100px';
+    player.domElement.style.left = '100px';
+
+    document.body.appendChild(player.domElement);
+    // Add key controls
+    window.onkeydown = keyDownListener;
+    window.onkeyup = keyUpListener;
+
+    function keyDownListener(e) {
+      switch (e.keyCode) {
+        case 37: // LEFT
+          if (playerMode != 'walk') {
+            playerDirection = 'Left';
+            playerMode = 'walk';
+            player.setMode(playerMode + playerDirection);
+          }
+          break;
+
+        case 39: // RIGHT
+          if (playerMode != 'walk') {
+            playerDirection = 'Right';
+            playerMode = 'walk';
+            player.setMode(playerMode + playerDirection);
+          }
+          break;
+
+        case 32: // SPACE for jump
+          player.jump();
+          break;
+      }
+    }
+
+    function keyUpListener() {
+      playerMode = 'stop';
+      player.setMode(playerMode + playerDirection);
+    }
+
+    function render() {
+
+      player.update();
+
+      var x = player.domElement.style.left ? parseInt(player.domElement.style.left) : 0;
+      var y = player.domElement.style.top ? parseInt(player.domElement.style.top) : 0;
+
+      if (playerMode == 'walk') {
+
+        if (playerDirection == 'Left') x -= 20;
+        if (playerDirection == 'Right') x += 20;
+
+        player.domElement.style.left = x + 'px';
+      }
+    }
+    var fps = 8;
+    setInterval(render, 1000 / fps);
+    //# sourceURL=pen.js
+  </script>
+
+
+</body>
+
+</html>
